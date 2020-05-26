@@ -6,12 +6,14 @@ public class RenderWindow
     public  Material sharedMaterial;
 
 
-    internal void draw(Mesh mesh, Material mat)
+    internal void draw(Mesh mesh, Material mat, int layer)
     {
 
-        Graphics.DrawMesh(mesh, Vector3.zero, Quaternion.identity, mat, 8);
-        //mat.SetPass(0);
-        //Graphics.DrawMeshNow(mesh, Vector3.zero, Quaternion.identity, 0);
+        //Graphics.DrawMesh(mesh, Vector3.zero, Quaternion.identity, mat, layer);
+        if (mat.SetPass(0))
+        {
+            Graphics.DrawMeshNow(mesh, Matrix4x4.identity);
+        }
     }
 
     internal void clear(Color color)
