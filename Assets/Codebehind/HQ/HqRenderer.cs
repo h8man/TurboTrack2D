@@ -6,6 +6,7 @@ public partial class HqRenderer : MonoBehaviour
 {
     public RenderWindow Renderer;
 
+    public Camera targetCamera;
     public SpriteRenderer BG;
     public SpriteRenderer Plane;
     public SpriteRenderer FG;
@@ -159,20 +160,58 @@ public partial class HqRenderer : MonoBehaviour
             _renderTexture = RenderTexture.GetTemporary(screenWidthRef, screenHeightRef);
             RenderTexture currentActiveRT = RenderTexture.active;
             Graphics.SetRenderTarget(_renderTexture);
-            //GL.PushMatrix();
-            //GL.LoadOrtho();
             GL.Clear(false, true, new Color(0.0f, 0.0f, 0, 0));
+            GL.PushMatrix();
+            //GL.LoadOrtho();
+            //var proj = Camera.main.projectionMatrix;
+            ////// If Camera.current is set, multiply our matrix by the inverse of its view matrix
+            //if (Camera.current != null) proj = proj * Camera.current.worldToCameraMatrix.inverse;
+            ////// Use instead of LoadOrtho
+            //GL.LoadProjectionMatrix(proj);
+            float refH = targetCamera.orthographicSize * PPU * 2;
+            float refHScale = refH / screenHeightRef;
+            float HScale = ((float)screenHeightRef) / targetCamera.pixelHeight;
+            float unscaledAspectRation = (HScale * targetCamera.pixelWidth) / screenWidthRef;
+
+            var m = Matrix4x4.Scale(new Vector3(unscaledAspectRation * refHScale, refHScale, 1));
+
             int i = 0;
             foreach (var material in materials)
             {
-                Renderer.draw(dictionary[material].ToMesh(combined[i++]), material, i);
+                Renderer.draw(dictionary[material].ToMesh(combined[i++]), material, m);
             }
             Graphics.CopyTexture(_renderTexture, Plane.sprite.texture);
-            //GL.PopMatrix();
+            GL.PopMatrix();
             Graphics.SetRenderTarget(currentActiveRT);
             RenderTexture.ReleaseTemporary(_renderTexture);
         }
     }
+
+    private void DrawBackground()
+    {
+        if (speed != 0 && track.lines[playerPos].curve != 0)
+        {
+            //doesnt work with sprite renderer, while still posted as sollution
+            //BG.material.mainTextureOffset += new Vector2(Mathf.Sign(speed) * track.lines[startPos].curve * Time.deltaTime * paralaxSpeed, 0);
+            //Not the best choice
+            //if (speed > 0) BG.transform.localPosition += new Vector3(Mathf.Sign(speed) * track.lines[startPos].curve / PPU, 0);
+            _renderTexture = RenderTexture.GetTemporary(BG.sprite.texture.width, BG.sprite.texture.height);
+            RenderTexture currentActiveRT = RenderTexture.active;
+            RenderTexture.active = _renderTexture;
+            //Work in the pixel matrix of the texture resolution.
+            GL.PushMatrix();
+            GL.LoadPixelMatrix(0, screenWidthRef, screenHeightRef, 0);
+
+            Vector2 offset = new Vector2(0.1f * Time.deltaTime * Mathf.Sign(speed) * track.lines[playerPos].curve, 0);
+            Graphics.Blit(BG.sprite.texture, _renderTexture, Vector2.one, offset, 0, 0);
+
+            Graphics.CopyTexture(_renderTexture, BG.sprite.texture);
+            GL.PopMatrix();
+            Graphics.SetRenderTarget(currentActiveRT);
+            RenderTexture.ReleaseTemporary(_renderTexture);
+        }
+    }
+
     private void PostRender(Camera cam)
     {
         DrawRoad();
@@ -184,12 +223,7 @@ public partial class HqRenderer : MonoBehaviour
     }
     void Update()
     {
-        if (speed != 0)
-        {
-            //doesnt work with sprite renderer, while still posted as sollution
-            //BG.material.mainTextureOffset += new Vector2(Mathf.Sign(speed) * track.lines[startPos].curve * Time.deltaTime * paralaxSpeed, 0);
-            if (speed > 0) BG.transform.localPosition += new Vector3(Mathf.Sign(speed) * track.lines[startPos].curve / PPU, 0);
-        }
+        DrawBackground();
         DrawObjects();
     }
 

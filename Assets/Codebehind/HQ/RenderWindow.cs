@@ -6,13 +6,13 @@ public class RenderWindow
     public  Material sharedMaterial;
 
 
-    internal void draw(Mesh mesh, Material mat, int layer)
+    internal void draw(Mesh mesh, Material mat, Matrix4x4 fixAspect)
     {
 
         //Graphics.DrawMesh(mesh, Vector3.zero, Quaternion.identity, mat, layer);
         if (mat.SetPass(0))
         {
-            Graphics.DrawMeshNow(mesh, Matrix4x4.identity);
+            Graphics.DrawMeshNow(mesh, fixAspect);
         }
     }
 
