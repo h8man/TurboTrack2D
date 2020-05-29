@@ -20,6 +20,9 @@ Technical Details:
 
 ## Demo
 
+- Arow keys to drive
+- Tab to accelerate
+
 https://github.com/h8man/TurboTrack2D/releases/tag/0.1a
 
 >> NOTE: All sprite graphics are placeholder graphics used here as teaching examples. Do not use or distribute these sprites!
