@@ -3,7 +3,7 @@
 Pseudo 3D Racing.
 60 FPS with no shaders.
 
-[[image01.png]]
+![print screen](image01.png)
 
 ### Prototype of 2D arcade style racing game
 
@@ -15,5 +15,5 @@ https://www.youtube.com/watch?v=N60lBZDEwJ8
 
 Technical Details:
 
-https://codeincomplete.com/articles/javascript-racer/
-http://www.extentofthejam.com/pseudo/
+1. https://codeincomplete.com/articles/javascript-racer/
+2. http://www.extentofthejam.com/pseudo/
