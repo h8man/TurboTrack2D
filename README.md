@@ -18,6 +18,10 @@ Technical Details:
 1. https://codeincomplete.com/articles/javascript-racer/
 2. http://www.extentofthejam.com/pseudo/
 
+Tread to disscuss:
+
+https://forum.unity.com/threads/using-unity-to-create-pseudo-3d-graphics.378826/
+
 ## Demo
 
 - Arow keys to drive
