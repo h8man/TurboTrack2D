@@ -3,6 +3,8 @@
 Pseudo 3D Racing.
 60 FPS with no shaders.
 
+[[image01.png]]
+
 ### Prototype of 2D arcade style racing game
 
 Small prototype of arcade style racing game with polygon projection technique
