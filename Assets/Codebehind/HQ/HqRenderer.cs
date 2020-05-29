@@ -193,8 +193,11 @@ public partial class HqRenderer : MonoBehaviour
         {
             //doesnt work with sprite renderer, while still posted as sollution
             //BG.material.mainTextureOffset += new Vector2(Mathf.Sign(speed) * track.lines[startPos].curve * Time.deltaTime * paralaxSpeed, 0);
-            //Not the best choice
-            //if (speed > 0) BG.transform.localPosition += new Vector3(Mathf.Sign(speed) * track.lines[startPos].curve / PPU, 0);
+
+            //Not the best solution
+            //BG.transform.localPosition += new Vector3(Mathf.Sign(speed) * track.lines[startPos].curve / PPU, 0);
+
+            //Good enough
             _renderTexture = RenderTexture.GetTemporary(BG.sprite.texture.width, BG.sprite.texture.height);
             RenderTexture currentActiveRT = RenderTexture.active;
             RenderTexture.active = _renderTexture;
@@ -206,6 +209,7 @@ public partial class HqRenderer : MonoBehaviour
             Graphics.Blit(BG.sprite.texture, _renderTexture, Vector2.one, offset, 0, 0);
 
             Graphics.CopyTexture(_renderTexture, BG.sprite.texture);
+
             GL.PopMatrix();
             Graphics.SetRenderTarget(currentActiveRT);
             RenderTexture.ReleaseTemporary(_renderTexture);

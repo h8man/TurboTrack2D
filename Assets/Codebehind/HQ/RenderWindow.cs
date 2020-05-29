@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class RenderWindow
 {
-    public  Material sharedMaterial;
-
 
     internal void draw(Mesh mesh, Material mat, Matrix4x4 fixAspect)
     {
