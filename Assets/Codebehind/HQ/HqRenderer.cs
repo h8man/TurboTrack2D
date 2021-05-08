@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class HqRenderer : MonoBehaviour
+[ExecuteInEditMode]
+public class HqRenderer : MonoBehaviour
 {
     public RenderWindow Renderer;
 
@@ -41,6 +42,7 @@ public partial class HqRenderer : MonoBehaviour
     Mesh[] combined;
     [NonSerialized]
     Dictionary<Material, Quad> dictionary = new Dictionary<Material, Quad>();
+    [NonSerialized]
     private Material[] materials;
 
     [NonSerialized]
@@ -57,6 +59,7 @@ public partial class HqRenderer : MonoBehaviour
     [NonSerialized]
     private int playerPos;
 
+    [NonSerialized]
     Quad[] quad;
     [NonSerialized]
     private RenderTexture _renderTexture;
@@ -223,15 +226,16 @@ public partial class HqRenderer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CalculateProjection();
+        GetInput();
     }
     void Update()
     {
+        CalculateProjection();
         DrawBackground();
         DrawObjects();
     }
 
-    void CalculateProjection()
+    void GetInput()
     {
         speed = 0;
         if (Input.GetKey(KeyCode.RightArrow)) playerX += 0.1f;
@@ -241,7 +245,10 @@ public partial class HqRenderer : MonoBehaviour
         if (Input.GetKey(KeyCode.Tab)) speed *= 3;
         if (Input.GetKey(KeyCode.W)) cameraHeight += 100;
         if (Input.GetKey(KeyCode.S)) cameraHeight -= 100;
+    }
 
+    void CalculateProjection()
+    { 
         trip += speed;
         while (trip >= track.Length * track.segmentLength) trip -= track.Length * track.segmentLength;
         while (trip < 0) trip += track.Length * track.segmentLength;
