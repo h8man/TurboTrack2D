@@ -227,10 +227,16 @@ public class HqRenderer : MonoBehaviour
     private void FixedUpdate()
     {
         GetInput();
+        CalculateProjection();
     }
     void Update()
     {
-        CalculateProjection();
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            CalculateProjection();
+        }
+#endif
         DrawBackground();
         DrawObjects();
     }
@@ -245,14 +251,14 @@ public class HqRenderer : MonoBehaviour
         if (Input.GetKey(KeyCode.Tab)) speed *= 3;
         if (Input.GetKey(KeyCode.W)) cameraHeight += 100;
         if (Input.GetKey(KeyCode.S)) cameraHeight -= 100;
+
+        trip += speed;
+        while (trip >= track.Length * track.segmentLength) trip -= track.Length * track.segmentLength;
+        while (trip < 0) trip += track.Length * track.segmentLength;
     }
 
     void CalculateProjection()
     { 
-        trip += speed;
-        while (trip >= track.Length * track.segmentLength) trip -= track.Length * track.segmentLength;
-        while (trip < 0) trip += track.Length * track.segmentLength;
-
         startPos = trip / track.segmentLength;
         playerZ = trip + cameraHeight * cameraDepth; // car is in front of cammera
         playerPos = (int)(playerZ / track.segmentLength) % track.lines.Length;
