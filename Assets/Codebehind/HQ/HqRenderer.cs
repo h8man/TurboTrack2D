@@ -45,8 +45,8 @@ public class HqRenderer : MonoBehaviour
     [NonSerialized]
     private Material[] materials;
 
-    [NonSerialized]
-    int trip = 0; //pixels
+    //[NonSerialized]
+    public int trip = 0; //pixels
     [NonSerialized]
     float playerX = 0;
     [NonSerialized]
@@ -68,6 +68,12 @@ public class HqRenderer : MonoBehaviour
 
     private void OnEnable()
     {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            Awake();
+        }
+#endif
         Camera.onPostRender += PostRender;
     }
     private void OnDisable()
