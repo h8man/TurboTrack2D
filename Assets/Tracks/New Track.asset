@@ -17,70 +17,100 @@ MonoBehaviour:
   - label: right turn
     disabled: 0
     curve: 0.5
-    spriteX: 0
     h: 0
+    spriteX: 0
+    flipX: 0
     sprite: {fileID: 0}
     Segments: {x: 300, y: 700}
     frequency: 1
   - label: hill
     disabled: 0
     curve: 0
-    spriteX: 2
     h: 0.033333335
+    spriteX: 2
+    flipX: 0
     sprite: {fileID: 0}
     Segments: {x: 750, y: 1800}
     frequency: 1
   - label: left turn
     disabled: 0
     curve: -0.7
-    spriteX: 0
     h: 0
+    spriteX: 0
+    flipX: 0
     sprite: {fileID: 0}
     Segments: {x: 1100, y: 1600}
     frequency: 1
   - label: lamps1
     disabled: 0
     curve: 0
-    spriteX: -2.5
     h: 0
-    sprite: {fileID: -7185895424969228801, guid: 6cfc24268e569b84cb7c900478cc6ace,
+    spriteX: -2.5
+    flipX: 0
+    sprite: {fileID: -2816102195700063125, guid: af7b02d7376e40b429f40c8227118c04,
       type: 3}
     Segments: {x: 0, y: 300}
-    frequency: 20
+    frequency: 23
   - label: lamps3
     disabled: 0
     curve: 0
-    spriteX: -1.7
     h: 0
-    sprite: {fileID: 281491231418348154, guid: 6cfc24268e569b84cb7c900478cc6ace, type: 3}
-    Segments: {x: 300, y: 1800}
-    frequency: 20
+    spriteX: -1.7
+    flipX: 0
+    sprite: {fileID: -2816102195700063125, guid: af7b02d7376e40b429f40c8227118c04,
+      type: 3}
+    Segments: {x: 300, y: 750}
+    frequency: 29
   - label: lamps4
     disabled: 0
     curve: 0
-    spriteX: -1.3
     h: 0
-    sprite: {fileID: 1590509343616781973, guid: 6cfc24268e569b84cb7c900478cc6ace,
+    spriteX: -1.53
+    flipX: 0
+    sprite: {fileID: -2816102195700063125, guid: af7b02d7376e40b429f40c8227118c04,
       type: 3}
     Segments: {x: 800, y: 1800}
-    frequency: 20
-  - label: lampsSingle
-    disabled: 0
-    curve: 0
-    spriteX: -1.3
-    h: 0
-    sprite: {fileID: 281491231418348154, guid: 6cfc24268e569b84cb7c900478cc6ace, type: 3}
-    Segments: {x: 400, y: 401}
-    frequency: 1
+    frequency: 26
   - label: lamps2
     disabled: 0
     curve: 0
-    spriteX: 2
     h: 0
-    sprite: {fileID: 1821034816683627037, guid: 6cfc24268e569b84cb7c900478cc6ace,
+    spriteX: 2
+    flipX: 1
+    sprite: {fileID: -2816102195700063125, guid: af7b02d7376e40b429f40c8227118c04,
       type: 3}
     Segments: {x: 0, y: 1800}
-    frequency: 17
+    frequency: 25
+  - label: right turn
+    disabled: 0
+    curve: 0
+    h: 0
+    spriteX: -2
+    flipX: 0
+    sprite: {fileID: -9064669081510660656, guid: af7b02d7376e40b429f40c8227118c04,
+      type: 3}
+    Segments: {x: 300, y: 700}
+    frequency: 11
+  - label: start
+    disabled: 0
+    curve: 0
+    h: 0
+    spriteX: -0.05
+    flipX: 0
+    sprite: {fileID: -188883476259138534, guid: af7b02d7376e40b429f40c8227118c04,
+      type: 3}
+    Segments: {x: 0, y: 2}
+    frequency: 1
+  - label: left trun
+    disabled: 0
+    curve: 0
+    h: 0
+    spriteX: 1.5
+    flipX: 1
+    sprite: {fileID: -9064669081510660656, guid: af7b02d7376e40b429f40c8227118c04,
+      type: 3}
+    Segments: {x: 1100, y: 1500}
+    frequency: 11
   roadWidth: 1500
   segmentLength: 200
   trackHeight: 1800

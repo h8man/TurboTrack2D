@@ -8,7 +8,10 @@ namespace HQ
     {
         public string label;
         public bool disabled;
-        public float curve, spriteX, h;
+        public float curve;
+        public float h;
+        public float spriteX;
+        public bool flipX;
         public Sprite sprite;
         public Vector2Int Segments;
         public int frequency;

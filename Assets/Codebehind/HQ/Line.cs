@@ -6,6 +6,7 @@ public struct Line
     public float X, Y, W; //screen coord
     public float curve, spriteX, clip, scale;
     public Sprite sprite;
+    public bool flipX;
 
     public void project(int camX, int camY, int camZ, int screenWidth2, int screenHeight2, float cameraDepth)
     {

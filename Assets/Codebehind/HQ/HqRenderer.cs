@@ -141,7 +141,7 @@ public class HqRenderer : MonoBehaviour
 
         Rect target = new Rect(destX, destY, destW, destH);
         Rect source = new Rect(Vector2Int.zero, new Vector2(1, 1 - clipH / destH));
-        Renderer.draw(source, s, target);
+        Renderer.draw(source, s, target, line.flipX);
     }
     private void addQuad(Material c, float x1, float y1, float w1, float x2, float y2, float w2, float z)
     {

@@ -49,6 +49,12 @@ namespace HQ
 
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y + i++ * EditorGUIUtility.singleLineHeight, rect.width, EditorGUIUtility.singleLineHeight),
+                element.FindPropertyRelative("h"),
+                new GUIContent("h")
+            );
+
+            EditorGUI.PropertyField(
+                new Rect(rect.x, rect.y + i++ * EditorGUIUtility.singleLineHeight, rect.width, EditorGUIUtility.singleLineHeight),
                 element.FindPropertyRelative("curve"),
                 new GUIContent("curve")
             );
@@ -56,15 +62,15 @@ namespace HQ
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y + i++ * EditorGUIUtility.singleLineHeight, rect.width, EditorGUIUtility.singleLineHeight),
                 element.FindPropertyRelative("spriteX"),
-                new GUIContent("spriteX")
+                new GUIContent("sprite X")
             );
-            
+
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y + i++ * EditorGUIUtility.singleLineHeight, rect.width, EditorGUIUtility.singleLineHeight),
-                element.FindPropertyRelative("h"),
-                new GUIContent("h")
+                element.FindPropertyRelative("flipX"),
+                new GUIContent("flip X")
             );
-            
+
             EditorGUI.PropertyField(
                 new Rect(rect.x, rect.y + i++ * EditorGUIUtility.singleLineHeight, rect.width, EditorGUIUtility.singleLineHeight),
                 element.FindPropertyRelative("sprite"),

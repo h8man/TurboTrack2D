@@ -19,7 +19,7 @@ public class RenderWindow
         throw new NotImplementedException();
     }
 
-    internal void draw(Rect offsetSource, Sprite sprite, Rect taret)
+    internal void draw(Rect offsetSource, Sprite sprite, Rect taret, bool flip)
     {
         //Graphics.DrawTexture(
         //    new Rect(
@@ -35,13 +35,13 @@ public class RenderWindow
         //        s.rect.width / s.texture.width  * Source.width,
         //        s.rect.height / s.texture.height * Source.height)
         //    , 0, 0, 0, 0);
-        var cut = sprite.rect.height / sprite.texture.height * offsetSource.height;
+        var sign = flip ? -1: 1;
 
         Graphics.DrawTexture(
             new Rect(
                 taret.x,
                 taret.y,
-                taret.width,
+                taret.width * sign,
                 taret.height * offsetSource.height
             ),
             sprite.texture,

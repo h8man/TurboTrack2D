@@ -37,6 +37,7 @@ public class TrackObject: ScriptableObject
                     line.spriteX = m.spriteX;
                     line.y += Mathf.Sin(i * m.h) * trackHeight;
                     line.sprite = m.sprite ?? line.sprite;
+                    line.flipX = m.flipX;
                 }
             }
 
