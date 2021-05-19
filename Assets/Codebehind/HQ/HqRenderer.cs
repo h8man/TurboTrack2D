@@ -11,6 +11,7 @@ public class HqRenderer : MonoBehaviour
     public SpriteRenderer BG;
     public SpriteRenderer Plane;
     public SpriteRenderer FG;
+    public Sprite BGSprite;
     public int PPU;
 
     public TrackObject track;
@@ -29,6 +30,7 @@ public class HqRenderer : MonoBehaviour
     public int DravingDistance = 300; //segments
     public int cameraHeight = 1500; //pixels?
     public float centrifugal = 0.1f;
+    public float paralaxSpeed = 0.1f;
     public bool drawRoad;
     public bool drawSprites;
     public int rumbleWidth;
@@ -65,6 +67,8 @@ public class HqRenderer : MonoBehaviour
     private RenderTexture _renderTexture;
     [NonSerialized]
     private int speed;
+    [NonSerialized]
+    private Vector2 bgOffset;
 
     private void OnEnable()
     {
@@ -94,6 +98,11 @@ public class HqRenderer : MonoBehaviour
         tex2.filterMode = FilterMode.Point;
         Plane.sprite = Sprite.Create(tex2, new Rect(0, 0, screenWidthRef, screenHeightRef), new Vector2(0.5f, 0.5f), PPU);
         Plane.sprite.name = "runtimePlane";
+        
+        Texture2D tex3 = new Texture2D(BGSprite.texture.width,  BGSprite.texture.height, TextureFormat.RGBA32, false);
+        tex2.filterMode = FilterMode.Point;
+        BG.sprite = Sprite.Create(tex3, BGSprite.rect, new Vector2(0.5f, 0.5f), PPU);
+        BG.sprite.name = "runtimeBG";
 
         quad = new Quad[] { new Quad(), new Quad(), new Quad(), new Quad(), new Quad(), new Quad(), new Quad() };
         combined = new Mesh[] { new Mesh(), new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh()};
@@ -134,9 +143,9 @@ public class HqRenderer : MonoBehaviour
         Rect source = new Rect(Vector2Int.zero, new Vector2(1, 1 - clipH / destH));
         Renderer.draw(source, s, target);
     }
-    private void addQuad(Material c, float x1, float y1, float w1, float x2, float y2, float w2)
+    private void addQuad(Material c, float x1, float y1, float w1, float x2, float y2, float w2, float z)
     {
-        dictionary[c].SetQuad(x1 / PPU, y1 / PPU, w1 / PPU, x2 / PPU, y2 / PPU, w2 / PPU);
+        dictionary[c].SetQuad(x1 / PPU, y1 / PPU, w1 / PPU, x2 / PPU, y2 / PPU, w2 / PPU, z);
     }
 
     private void DrawObjects()
@@ -171,12 +180,6 @@ public class HqRenderer : MonoBehaviour
             Graphics.SetRenderTarget(_renderTexture);
             GL.Clear(false, true, new Color(0.0f, 0.0f, 0, 0));
             GL.PushMatrix();
-            //GL.LoadOrtho();
-            //var proj = Camera.main.projectionMatrix;
-            ////// If Camera.current is set, multiply our matrix by the inverse of its view matrix
-            //if (Camera.current != null) proj = proj * Camera.current.worldToCameraMatrix.inverse;
-            ////// Use instead of LoadOrtho
-            //GL.LoadProjectionMatrix(proj);
             float refH = targetCamera.orthographicSize * PPU * 2;
             float refHScale = refH / screenHeightRef;
             float HScale = ((float)screenHeightRef) / targetCamera.pixelHeight;
@@ -198,7 +201,7 @@ public class HqRenderer : MonoBehaviour
 
     private void DrawBackground()
     {
-        if (speed != 0 && track.lines[playerPos].curve != 0)
+        //if (speed != 0 && track.lines[playerPos].curve != 0)
         {
             //doesnt work with sprite renderer, while still posted as sollution
             //BG.material.mainTextureOffset += new Vector2(Mathf.Sign(speed) * track.lines[startPos].curve * Time.deltaTime * paralaxSpeed, 0);
@@ -207,15 +210,16 @@ public class HqRenderer : MonoBehaviour
             //BG.transform.localPosition += new Vector3(Mathf.Sign(speed) * track.lines[startPos].curve / PPU, 0);
 
             //Good enough
-            _renderTexture = RenderTexture.GetTemporary(BG.sprite.texture.width, BG.sprite.texture.height);
+            _renderTexture = RenderTexture.GetTemporary(BG.sprite.texture.width, BG.sprite.texture.height, 0, BG.sprite.texture.graphicsFormat);
             RenderTexture currentActiveRT = RenderTexture.active;
             RenderTexture.active = _renderTexture;
             //Work in the pixel matrix of the texture resolution.
             GL.PushMatrix();
             GL.LoadPixelMatrix(0, screenWidthRef, screenHeightRef, 0);
 
-            Vector2 offset = new Vector2(0.1f * Time.deltaTime * Mathf.Sign(speed) * track.lines[playerPos].curve, 0);
-            Graphics.Blit(BG.sprite.texture, _renderTexture, Vector2.one, offset, 0, 0);
+            bgOffset += new Vector2(paralaxSpeed/PPU * speed * Time.deltaTime * track.lines[playerPos].curve, 0);
+
+            Graphics.Blit(BGSprite.texture, _renderTexture, Vector2.one, bgOffset, 0, 0);
 
             Graphics.CopyTexture(_renderTexture, BG.sprite.texture);
 
@@ -321,7 +325,7 @@ public class HqRenderer : MonoBehaviour
 
             if ((n / 3) % 2 == 0)
             {
-                addQuad(dashline, p.X, p.Y * 1.1f, p.W * 0.05f, l.X, l.Y * 1.1f, l.W * 0.05f);
+                addQuad(dashline, p.X, p.Y * 1.1f, p.W * 0.05f, l.X, l.Y * 1.1f, l.W * 0.05f, z);
             }
 
             counter++;

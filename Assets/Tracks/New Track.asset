@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd58ce2d624a15439d1a943c062995f, type: 3}
+  m_Name: New Track
+  m_EditorClassIdentifier: 
+  Length: 1600
+  Modifier:
+  - label: right turn
+    disabled: 0
+    curve: 0.5
+    spriteX: 0
+    h: 0
+    sprite: {fileID: 0}
+    Segments: {x: 300, y: 700}
+    frequency: 1
+  - label: hill
+    disabled: 0
+    curve: 0
+    spriteX: 2
+    h: 0.033333335
+    sprite: {fileID: 0}
+    Segments: {x: 750, y: 1800}
+    frequency: 1
+  - label: left turn
+    disabled: 0
+    curve: -0.7
+    spriteX: 0
+    h: 0
+    sprite: {fileID: 0}
+    Segments: {x: 1100, y: 1600}
+    frequency: 1
+  - label: lamps1
+    disabled: 0
+    curve: 0
+    spriteX: -2.5
+    h: 0
+    sprite: {fileID: -7185895424969228801, guid: 6cfc24268e569b84cb7c900478cc6ace,
+      type: 3}
+    Segments: {x: 0, y: 300}
+    frequency: 20
+  - label: lamps3
+    disabled: 0
+    curve: 0
+    spriteX: -1.7
+    h: 0
+    sprite: {fileID: 281491231418348154, guid: 6cfc24268e569b84cb7c900478cc6ace, type: 3}
+    Segments: {x: 300, y: 1800}
+    frequency: 20
+  - label: lamps4
+    disabled: 0
+    curve: 0
+    spriteX: -1.3
+    h: 0
+    sprite: {fileID: 1590509343616781973, guid: 6cfc24268e569b84cb7c900478cc6ace,
+      type: 3}
+    Segments: {x: 800, y: 1800}
+    frequency: 20
+  - label: lampsSingle
+    disabled: 0
+    curve: 0
+    spriteX: -1.3
+    h: 0
+    sprite: {fileID: 281491231418348154, guid: 6cfc24268e569b84cb7c900478cc6ace, type: 3}
+    Segments: {x: 400, y: 401}
+    frequency: 1
+  - label: lamps2
+    disabled: 0
+    curve: 0
+    spriteX: 2
+    h: 0
+    sprite: {fileID: 1821034816683627037, guid: 6cfc24268e569b84cb7c900478cc6ace,
+      type: 3}
+    Segments: {x: 0, y: 1800}
+    frequency: 17
+  roadWidth: 1500
+  segmentLength: 200
+  trackHeight: 1800
