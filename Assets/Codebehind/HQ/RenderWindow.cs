@@ -19,7 +19,7 @@ public class RenderWindow
         throw new NotImplementedException();
     }
 
-    internal void draw(Rect Source, Sprite s, Rect taret)
+    internal void draw(Rect offsetSource, Sprite sprite, Rect taret)
     {
         //Graphics.DrawTexture(
         //    new Rect(
@@ -35,19 +35,21 @@ public class RenderWindow
         //        s.rect.width / s.texture.width  * Source.width,
         //        s.rect.height / s.texture.height * Source.height)
         //    , 0, 0, 0, 0);
+        var cut = sprite.rect.height / sprite.texture.height * offsetSource.height;
+
         Graphics.DrawTexture(
             new Rect(
                 taret.x,
                 taret.y,
                 taret.width,
-                taret.height * Source.height
+                taret.height * offsetSource.height
             ),
-            s.texture,
+            sprite.texture,
             new Rect(
-                s.rect.x / s.texture.width,
-                s.rect.y / s.texture.height + 1 - s.rect.height / s.texture.height * Source.height, //WHY?!
-                s.rect.width / s.texture.width,
-                s.rect.height / s.texture.height * Source.height)
+                sprite.rect.x / sprite.texture.width,
+                sprite.rect.y / sprite.texture.height + (1 - offsetSource.height) * sprite.rect.height / sprite.texture.height,
+                sprite.rect.width / sprite.texture.width,
+                sprite.rect.height / sprite.texture.height * offsetSource.height)
             , 0, 0, 0, 0);
 
     }

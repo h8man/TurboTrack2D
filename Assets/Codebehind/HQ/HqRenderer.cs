@@ -201,32 +201,23 @@ public class HqRenderer : MonoBehaviour
 
     private void DrawBackground()
     {
-        //if (speed != 0 && track.lines[playerPos].curve != 0)
-        {
-            //doesnt work with sprite renderer, while still posted as sollution
-            //BG.material.mainTextureOffset += new Vector2(Mathf.Sign(speed) * track.lines[startPos].curve * Time.deltaTime * paralaxSpeed, 0);
+        //Good enough
+        _renderTexture = RenderTexture.GetTemporary(BG.sprite.texture.width, BG.sprite.texture.height, 0, BG.sprite.texture.graphicsFormat);
+        RenderTexture currentActiveRT = RenderTexture.active;
+        RenderTexture.active = _renderTexture;
+        //Work in the pixel matrix of the texture resolution.
+        GL.PushMatrix();
+        GL.LoadPixelMatrix(0, screenWidthRef, screenHeightRef, 0);
 
-            //Not the best solution
-            //BG.transform.localPosition += new Vector3(Mathf.Sign(speed) * track.lines[startPos].curve / PPU, 0);
+        bgOffset += new Vector2(paralaxSpeed/PPU * speed * Time.deltaTime * track.lines[playerPos].curve, 0);
 
-            //Good enough
-            _renderTexture = RenderTexture.GetTemporary(BG.sprite.texture.width, BG.sprite.texture.height, 0, BG.sprite.texture.graphicsFormat);
-            RenderTexture currentActiveRT = RenderTexture.active;
-            RenderTexture.active = _renderTexture;
-            //Work in the pixel matrix of the texture resolution.
-            GL.PushMatrix();
-            GL.LoadPixelMatrix(0, screenWidthRef, screenHeightRef, 0);
+        Graphics.Blit(BGSprite.texture, _renderTexture, Vector2.one, bgOffset, 0, 0);
 
-            bgOffset += new Vector2(paralaxSpeed/PPU * speed * Time.deltaTime * track.lines[playerPos].curve, 0);
+        Graphics.CopyTexture(_renderTexture, BG.sprite.texture);
 
-            Graphics.Blit(BGSprite.texture, _renderTexture, Vector2.one, bgOffset, 0, 0);
-
-            Graphics.CopyTexture(_renderTexture, BG.sprite.texture);
-
-            GL.PopMatrix();
-            Graphics.SetRenderTarget(currentActiveRT);
-            RenderTexture.ReleaseTemporary(_renderTexture);
-        }
+        GL.PopMatrix();
+        Graphics.SetRenderTarget(currentActiveRT);
+        RenderTexture.ReleaseTemporary(_renderTexture);
     }
 
     private void PostRender(Camera cam)
@@ -321,7 +312,7 @@ public class HqRenderer : MonoBehaviour
 
             var z = (float)(n - startPos) / DravingDistance;
 
-            addQuad(grass, 0, p.Y, screenWidthRef, 0, l.Y, screenWidthRef, z);
+            addQuad(grass, 0, p.Y, screenWidth2, 0, l.Y, screenWidth2, z);
             addQuad(rumble, p.X, p.Y, p.W + p.scale * rumbleWidth * screenWidth2, l.X, l.Y, l.W + l.scale * rumbleWidth * screenWidth2, z);
             addQuad(road, p.X, p.Y, p.W, l.X, l.Y, l.W, z);
 
