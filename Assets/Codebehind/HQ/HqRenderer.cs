@@ -319,9 +319,11 @@ public class HqRenderer : MonoBehaviour
                 continue;
             }
 
-            addQuad(grass, 0, p.Y, screenWidthRef, 0, l.Y, screenWidthRef);
-            addQuad(rumble, p.X, p.Y, p.W + p.scale * rumbleWidth * screenWidth2, l.X, l.Y, l.W + l.scale * rumbleWidth * screenWidth2);
-            addQuad(road, p.X, p.Y, p.W, l.X, l.Y, l.W);
+            var z = (float)(n - startPos) / DravingDistance;
+
+            addQuad(grass, 0, p.Y, screenWidthRef, 0, l.Y, screenWidthRef, z);
+            addQuad(rumble, p.X, p.Y, p.W + p.scale * rumbleWidth * screenWidth2, l.X, l.Y, l.W + l.scale * rumbleWidth * screenWidth2, z);
+            addQuad(road, p.X, p.Y, p.W, l.X, l.Y, l.W, z);
 
             if ((n / 3) % 2 == 0)
             {

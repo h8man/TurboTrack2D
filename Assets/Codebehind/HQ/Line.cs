@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+
 public struct Line
 {
     public float x, y, z, w;//3d center of line
