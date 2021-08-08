@@ -28,7 +28,9 @@ public class HqRenderer : MonoBehaviour
     public int screenHeightRef = 240;
     public float cameraDepth = 0.84f; //camera depth [0..1]
     public int DravingDistance = 300; //segments
+    public int quadCapacity = 4000;
     public int cameraHeight = 1500; //pixels?
+    public float cameraOffset = 0;
     public float centrifugal = 0.1f;
     public float paralaxSpeed = 0.1f;
     public bool drawRoad;
@@ -66,7 +68,9 @@ public class HqRenderer : MonoBehaviour
     [NonSerialized]
     private RenderTexture _renderTexture;
     [NonSerialized]
-    private int speed;
+    private float speed;
+    [NonSerialized]
+    private float prevTrip;
     [NonSerialized]
     private Vector2 bgOffset;
 
@@ -104,7 +108,15 @@ public class HqRenderer : MonoBehaviour
         BG.sprite = Sprite.Create(tex3, BGSprite.rect, new Vector2(0.5f, 0.5f), PPU);
         BG.sprite.name = "runtimeBG";
 
-        quad = new Quad[] { new Quad(), new Quad(), new Quad(), new Quad(), new Quad(), new Quad(), new Quad() };
+        quad = new Quad[] {
+            new Quad(quadCapacity), 
+            new Quad(quadCapacity), 
+            new Quad(quadCapacity),
+            new Quad(quadCapacity),
+            new Quad(quadCapacity), 
+            new Quad(quadCapacity),
+            new Quad(quadCapacity)
+        };
         combined = new Mesh[] { new Mesh(), new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh(),new Mesh()};
         dictionary = new Dictionary<Material, Quad>()
         {
@@ -227,7 +239,6 @@ public class HqRenderer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetInput();
         CalculateProjection();
     }
     void Update()
@@ -242,32 +253,16 @@ public class HqRenderer : MonoBehaviour
         DrawObjects();
     }
 
-    void GetInput()
-    {
-        speed = 0;
-        if (Input.GetKey(KeyCode.RightArrow)) playerX += 0.1f;
-        if (Input.GetKey(KeyCode.LeftArrow)) playerX -= 0.1f;
-        if (Input.GetKey(KeyCode.UpArrow)) speed = 200;
-        if (Input.GetKey(KeyCode.DownArrow)) speed = -200;
-        if (Input.GetKey(KeyCode.Tab)) speed *= 3;
-        if (Input.GetKey(KeyCode.W)) cameraHeight += 100;
-        if (Input.GetKey(KeyCode.S)) cameraHeight -= 100;
-
-        trip += speed;
-        while (trip >= track.Length * track.segmentLength) trip -= track.Length * track.segmentLength;
-        while (trip < 0) trip += track.Length * track.segmentLength;
-    }
-
     void CalculateProjection()
-    { 
+    {
+        speed = trip - prevTrip;
+        prevTrip = trip;
         startPos = trip / track.segmentLength;
         playerZ = trip + cameraHeight * cameraDepth; // car is in front of cammera
         playerPos = (int)(playerZ / track.segmentLength) % track.lines.Length;
         playerY = track.lines[playerPos].y;
         int camH = (int)(playerY + cameraHeight);
-        playerX = playerX - track.lines[playerPos].curve * centrifugal * speed * Time.fixedDeltaTime;
-        playerX = Mathf.Clamp(playerX, -2, 2);
-
+        playerX = cameraOffset;
         screenWidth2 = screenWidthRef / 2;
         screenHeight2 = screenHeightRef / 2;
 
@@ -315,7 +310,14 @@ public class HqRenderer : MonoBehaviour
             addQuad(grass, 0, p.Y, screenWidth2, 0, l.Y, screenWidth2, z);
             addQuad(rumble, p.X, p.Y, p.W + p.scale * rumbleWidth * screenWidth2, l.X, l.Y, l.W + l.scale * rumbleWidth * screenWidth2, z);
             addQuad(road, p.X, p.Y, p.W, l.X, l.Y, l.W, z);
+            //var p_rumbleWidth = p.W + p.scale * rumbleWidth * screenWidth2;
+            //var l_rumbleWidth = l.W + l.scale * rumbleWidth * screenWidth2;
+            //addQuad(grass, p.X - screenWidth2 - p_rumbleWidth, p.Y, screenWidth2, l.X - screenWidth2 - l_rumbleWidth, l.Y, screenWidth2, z);
+            //addQuad(grass, p.X + screenWidth2 + p_rumbleWidth, p.Y, screenWidth2, l.X + screenWidth2 + l_rumbleWidth, l.Y, screenWidth2, z);
+            //addQuad(rumble, p.X - p_rumbleWidth, p.Y, p.scale* rumbleWidth* screenWidth2, l.X - l_rumbleWidth, l.Y, l.scale*screenWidth2 * rumbleWidth, z);
+            //addQuad(rumble, p.X + p_rumbleWidth, p.Y, p.scale* rumbleWidth* screenWidth2, l.X + l_rumbleWidth, l.Y, l.scale*screenWidth2 * rumbleWidth, z);
 
+            addQuad(road, p.X, p.Y, p.W, l.X, l.Y, l.W, z);
             if ((n / 3) % 2 == 0)
             {
                 addQuad(dashline, p.X, p.Y * 1.1f, p.W * 0.05f, l.X, l.Y * 1.1f, l.W * 0.05f, z);
